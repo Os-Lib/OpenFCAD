@@ -12,11 +12,11 @@
     "desktop": "concurrently -k \"vite --port 5173\" \"wait-on http://localhost:5173 && electron . --dev\"",
     "desktop:prod": "npm run build && electron .",
     "assets:installer": "node scripts/generate-installer-assets.mjs",
-    "dist": "npm run assets:installer && npm run build && electron-builder --win --x64",
-    "dist:win": "npm run assets:installer && npm run build && electron-builder --win --x64",
-    "dist:mac": "npm run assets:installer && npm run build && electron-builder --mac --arm64 --x64",
-    "dist:linux": "npm run assets:installer && npm run build && electron-builder --linux --x64",
-    "dist:dir": "npm run assets:installer && npm run build && electron-builder --win --dir"
+    "dist": "npm run assets:installer && npm run build && electron-builder --win --x64 --publish never",
+    "dist:win": "npm run assets:installer && npm run build && electron-builder --win --x64 --publish never",
+    "dist:mac": "npm run assets:installer && npm run build && electron-builder --mac --arm64 --x64 --publish never",
+    "dist:linux": "npm run assets:installer && npm run build && electron-builder --linux --x64 --publish never",
+    "dist:dir": "npm run assets:installer && npm run build && electron-builder --win --dir --publish never"
   },
   "build": {
     "appId": "org.openfcad.desktop",

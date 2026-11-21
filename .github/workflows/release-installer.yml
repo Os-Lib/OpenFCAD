@@ -9,12 +9,13 @@ on:
       - 'v*'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build-windows:
     name: Windows Installer (.exe)
     runs-on: windows-latest
-    permissions:
-      contents: write
 
     steps:
       - name: Checkout repository
@@ -40,18 +41,9 @@ jobs:
           name: OpenFCAD-Windows-Installer-exe
           path: release/*.exe
 
-      - name: Publish Windows .exe to GitHub Releases (on tag v*)
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: softprops/action-gh-release@v2
-        with:
-          files: release/*.exe
-          generate_release_notes: true
-
   build-macos:
     name: macOS Installer (.dmg Apple Silicon & Intel)
     runs-on: macos-latest
-    permissions:
-      contents: write
 
     steps:
       - name: Checkout repository
@@ -79,11 +71,21 @@ jobs:
             release/*.dmg
             release/*-mac-*.zip
 
-      - name: Publish macOS .dmg to GitHub Releases (on tag v*)
-        if: startsWith(github.ref, 'refs/tags/v')
+  publish-release:
+    name: Publish GitHub Release (Windows .exe + macOS .dmg)
+    needs: [build-windows, build-macos]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download all installer artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist-artifacts
+          merge-multiple: true
+
+      - name: Publish Release Assets to GitHub Releases
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            release/*.dmg
-            release/*-mac-*.zip
+          files: dist-artifacts/*
           generate_release_notes: true

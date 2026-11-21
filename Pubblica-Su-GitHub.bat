@@ -1,10 +1,9 @@
 @echo off
-chcp 65001 >nul
-title OpenFCAD — Pubblicazione Sicura su GitHub + Compilazione Installer (.exe e .dmg)
+title OpenFCAD - Pubblicazione Sicura su GitHub + Compilazione Installer (.exe e .dmg)
 cd /d "%~dp0"
 
 echo ============================================================================
-echo   OPENFCAD — PUBBLICAZIONE SU GITHUB E GENERAZIONE INSTALLER (.EXE / .DMG)
+echo   OPENFCAD - PUBBLICAZIONE SU GITHUB E GENERAZIONE INSTALLER (.EXE / .DMG)
 echo ============================================================================
 echo.
 echo Prima di continuare, assicurati di aver creato un nuovo repository VUOTO su:
@@ -23,8 +22,7 @@ if "%REPO_URL%"=="" (
 echo.
 echo [PRIVACY] Imposta il nome autore e l'email per i commit Git di questo progetto.
 echo Per NON esporre la tua email personale, premi semplicemente INVIO per usare
-echo l'alias "OpenFCAD" e l'email anonima "openfcad@users.noreply.github.com"
-echo (oppure inserisci la tua email privata noreply da GitHub Settings -^> Emails).
+echo l'alias "OpenFCAD" e l'email anonima "openfcad@users.noreply.github.com".
 echo.
 set "GIT_NAME=OpenFCAD"
 set "GIT_EMAIL=openfcad@users.noreply.github.com"
