@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+
+# Build & Release Outputs
+dist/
+release/
+*.tsbuildinfo
+
+# Local Environment & OS
+.env
+.env.*
+.DS_Store
+Thumbs.db
+installer-lang.json

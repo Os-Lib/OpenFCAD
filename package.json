@@ -1,0 +1,196 @@
+{
+  "name": "openfcad",
+  "version": "2026.1.0",
+  "description": "OpenFCAD — Applicazione CAD 2D/3D Desktop & Web multilingua con motore geometrico, OSNAP/OTRACK, Layer, Blocchi, Quote, Tabelle, DXF/SVG/STL, Layout e Modellazione Solida 3D CSG",
+  "author": "OpenFCAD Contributors",
+  "license": "MIT",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "vite --port 5173",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --port 5173",
+    "desktop": "concurrently -k \"vite --port 5173\" \"wait-on http://localhost:5173 && electron . --dev\"",
+    "desktop:prod": "npm run build && electron .",
+    "assets:installer": "node scripts/generate-installer-assets.mjs",
+    "dist": "npm run assets:installer && npm run build && electron-builder --win --x64",
+    "dist:win": "npm run assets:installer && npm run build && electron-builder --win --x64",
+    "dist:mac": "npm run assets:installer && npm run build && electron-builder --mac --arm64 --x64",
+    "dist:linux": "npm run assets:installer && npm run build && electron-builder --linux --x64",
+    "dist:dir": "npm run assets:installer && npm run build && electron-builder --win --dir"
+  },
+  "build": {
+    "appId": "org.openfcad.desktop",
+    "productName": "OpenFCAD",
+    "copyright": "Copyright © 2026 OpenFCAD Contributors",
+    "asar": true,
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "build/icon.ico",
+      "build/icon.icns",
+      "build/icon.png",
+      "package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.graphics-design",
+      "icon": "build/icon.icns",
+      "darkModeSupport": true,
+      "artifactName": "OpenFCAD-${version}-mac-${arch}.${ext}",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        }
+      ],
+      "fileAssociations": [
+        {
+          "ext": "dxf",
+          "name": "DXF CAD Drawing",
+          "role": "Editor"
+        },
+        {
+          "ext": "json",
+          "name": "OpenFCAD Project",
+          "role": "Editor"
+        }
+      ]
+    },
+    "dmg": {
+      "title": "OpenFCAD ${version}",
+      "icon": "build/icon.icns",
+      "background": "build/dmgBackground.png",
+      "iconSize": 80,
+      "window": {
+        "width": 540,
+        "height": 380
+      },
+      "contents": [
+        {
+          "x": 145,
+          "y": 190,
+          "type": "file"
+        },
+        {
+          "x": 395,
+          "y": 190,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "icon": "build/icon.png",
+      "category": "Graphics",
+      "artifactName": "OpenFCAD-${version}-linux-${arch}.${ext}",
+      "target": [
+        "AppImage"
+      ]
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico",
+      "artifactName": "OpenFCAD-Setup-${version}.${ext}",
+      "fileAssociations": [
+        {
+          "ext": "dxf",
+          "name": "DXF CAD Drawing",
+          "description": "Disegno CAD DXF Standard",
+          "role": "Editor"
+        },
+        {
+          "ext": "json",
+          "name": "OpenFCAD Project",
+          "description": "Progetto OpenFCAD (.ofcad.json)",
+          "role": "Editor"
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "warningsAsErrors": false,
+      "unicode": true,
+      "displayLanguageSelector": true,
+      "multiLanguageInstaller": true,
+      "installerLanguages": [
+        "it_IT",
+        "en_US",
+        "es_ES",
+        "fr_FR",
+        "de_DE",
+        "pt_PT",
+        "pt_BR",
+        "ru_RU",
+        "zh_CN",
+        "zh_TW",
+        "ja_JP",
+        "ko_KR",
+        "ar_SA",
+        "nl_NL",
+        "pl_PL",
+        "tr_TR",
+        "uk_UA",
+        "cs_CZ",
+        "el_GR",
+        "hu_HU",
+        "ro_RO",
+        "sv_SE",
+        "fi_FI",
+        "da_DK"
+      ],
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "installerHeaderIcon": "build/icon.ico",
+      "installerSidebar": "build/installerSidebar.bmp",
+      "installerHeader": "build/installerHeader.bmp",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "OpenFCAD",
+      "uninstallDisplayName": "OpenFCAD — CAD 2D/3D",
+      "license": "LICENSE",
+      "include": "build/installer.nsh",
+      "runAfterFinish": true
+    }
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "three": "^0.174.0",
+    "zustand": "^5.0.3"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@types/three": "^0.174.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.2",
+    "electron": "^35.0.0",
+    "electron-builder": "^26.18.0",
+    "typescript": "^5.7.3",
+    "vite": "^6.2.0",
+    "wait-on": "^8.0.2"
+  }
+}
